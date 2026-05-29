@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKASHA — Regresión a Vidas Pasadas y Memoria Simbólica</title>
+<meta name="description" content="Comprender el origen transforma el presente. Sesiones individuales de regresión a vidas pasadas y memoria simbólica online para personas de habla hispana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Cormorant:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #8B6914;
+    --black: #05040A;
+    --black-mid: #0D0B14;
+    --black-soft: #141020;
+    --cream: #F0E8D5;
+    --cream-dim: #B8A98A;
+    --white: #FAF6EE;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--black);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 2.1;
+    overflow-x: hidden;
+  }
+
+  /* ── STARS BACKGROUND ── */
+  .stars-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .stars-bg::before, .stars-bg::after {
+    content: '';
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow:
+      120px 80px 0 0 rgba(255,255,255,0.6),
+      240px 200px 0 0 rgba(255,255,255,0.4),
+      380px 50px 0 0 rgba(201,168,76,0.5),
+      500px 320px 0 0 rgba(255,255,255,0.3),
+      650px 150px 0 0 rgba(255,255,255,0.5),
+      780px 280px 0 0 rgba(201,168,76,0.4),
+      920px 90px 0 0 rgba(255,255,255,0.6),
+      1050px 400px 0 0 rgba(255,255,255,0.3),
+      1200px 180px 0 0 rgba(201,168,76,0.5),
+      1350px 320px 0 0 rgba(255,255,255,0.4),
+      80px 450px 0 0 rgba(255,255,255,0.3),
+      200px 600px 0 0 rgba(201,168,76,0.4),
+      350px 500px 0 0 rgba(255,255,255,0.5),
+      480px 700px 0 0 rgba(255,255,255,0.3),
+      600px 550px 0 0 rgba(201,168,76,0.6),
+      750px 650px 0 0 rgba(255,255,255,0.4),
+      900px 480px 0 0 rgba(255,255,255,0.5),
+      1100px 600px 0 0 rgba(201,168,76,0.3),
+      1300px 500px 0 0 rgba(255,255,255,0.6),
+      50px 850px 0 0 rgba(255,255,255,0.4),
+      300px 900px 0 0 rgba(201,168,76,0.5),
+      550px 800px 0 0 rgba(255,255,255,0.3),
+      800px 950px 0 0 rgba(255,255,255,0.5),
+      1000px 820px 0 0 rgba(201,168,76,0.4),
+      1200px 900px 0 0 rgba(255,255,255,0.3);
+  }
+  .stars-bg::after {
+    width: 1px; height: 1px;
+    box-shadow:
+      160px 130px 0 0 rgba(255,255,255,0.4),
+      290px 270px 0 0 rgba(201,168,76,0.3),
+      430px 100px 0 0 rgba(255,255,255,0.5),
+      560px 380px 0 0 rgba(255,255,255,0.4),
+      700px 210px 0 0 rgba(201,168,76,0.5),
+      840px 340px 0 0 rgba(255,255,255,0.3),
+      980px 140px 0 0 rgba(255,255,255,0.6),
+      1120px 460px 0 0 rgba(201,168,76,0.4),
+      1260px 240px 0 0 rgba(255,255,255,0.5),
+      100px 520px 0 0 rgba(255,255,255,0.4),
+      280px 680px 0 0 rgba(201,168,76,0.3),
+      420px 560px 0 0 rgba(255,255,255,0.5),
+      620px 620px 0 0 rgba(255,255,255,0.4),
+      850px 710px 0 0 rgba(201,168,76,0.5),
+      970px 540px 0 0 rgba(255,255,255,0.3),
+      1140px 660px 0 0 rgba(255,255,255,0.6),
+      1320px 580px 0 0 rgba(201,168,76,0.4);
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0;
+    opacity: 0.5;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .divider-star {
+    color: var(--gold);
+    font-size: 14px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px 80px;
+    position: relative;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .logo-container {
+    width: 320px;
+    height: 320px;
+    margin: 0 auto 48px;
+    animation: fadeIn 2s ease forwards;
+    filter: drop-shadow(0 0 30px rgba(201,168,76,0.3));
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(3.5rem, 12vw, 6rem);
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4);
+    margin-bottom: 12px;
+    animation: fadeUp 1.5s ease 0.3s both;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.95rem, 3.5vw, 1.2rem);
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeUp 1.5s ease 0.5s both;
+  }
+
+  .hero-line {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 0 auto 32px;
+    animation: expandWidth 1.5s ease 0.7s both;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    font-weight: 300;
+    color: var(--cream-dim);
+    letter-spacing: 0.05em;
+    max-width: 500px;
+    margin: 0 auto 48px;
+    animation: fadeUp 1.5s ease 0.9s both;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: var(--black);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dim));
+    padding: 16px 40px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    animation: fadeUp 1.5s ease 1.1s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+  .cta-btn:hover::before { left: 100%; }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold-dim);
+    font-size: 1.2rem;
+    animation: bounce 2s infinite;
+    opacity: 0.6;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 6.5vw, 2.8rem);
+    font-weight: 400;
+    color: var(--gold-light);
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+    line-height: 1.4;
+  }
+
+  h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  p {
+    color: var(--cream-dim);
+    font-size: clamp(1.3rem, 4.5vw, 1.5rem);
+    line-height: 2.1;
+    margin-bottom: 24px;
+  }
+
+  /* ── INTRO ── */
+  .intro {
+    background: linear-gradient(to bottom, transparent, var(--black-mid) 20%, var(--black-mid) 80%, transparent);
+  }
+
+  .intro-text {
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--cream);
+    text-align: center;
+    line-height: 2;
+  }
+
+  .highlight-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 5vw, 1.9rem);
+    color: var(--gold-light);
+    text-align: center;
+    margin: 32px 0;
+    padding: 24px 32px;
+    border-left: 2px solid var(--gold-dim);
+    border-right: 2px solid var(--gold-dim);
+    background: rgba(201,168,76,0.04);
+  }
+
+  /* ── WHAT IS ── */
+  .what-is { background: transparent; }
+
+  .card {
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 36px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .card:hover {
+    border-color: rgba(201,168,76,0.35);
+    background: rgba(201,168,76,0.07);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold-dim), var(--gold), var(--gold-dim));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .card:hover::before { opacity: 1; }
+
+  /* ── EXPERIENCES LIST ── */
+  .experiences {
+    list-style: none;
+    padding: 0;
+  }
+  .experiences li {
+    padding: 14px 0 14px 36px;
+    position: relative;
+    color: var(--cream-dim);
+    font-size: clamp(1.25rem, 4vw, 1.4rem);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+  .experiences li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+    font-size: 0.7rem;
+    top: 14px;
+  }
+
+  /* ── PROCESS ── */
+  .process { background: var(--black-soft); }
+
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px;
+    align-items: start;
+    padding: 32px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .step:last-child { border-bottom: none; }
+
+  .step-number {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: rgba(201,168,76,0.2);
+    line-height: 1;
+    text-align: center;
+  }
+
+  .step-content h3 {
+    margin-bottom: 12px;
+  }
+
+  /* ── SAFE SPACE ── */
+  .safe-space {
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 50%, rgba(201,168,76,0.03) 100%);
+    border: 1px solid rgba(201,168,76,0.12);
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+  }
+  .safe-space::before {
+    content: '✦';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 1.2rem;
+    background: var(--black);
+    padding: 0 16px;
+  }
+
+  /* ── MODALITY ── */
+  .modality-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .modality-item {
+    text-align: center;
+    padding: 32px 24px;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.03);
+  }
+
+  .modality-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    display: block;
+    color: var(--gold);
+  }
+
+  .modality-item p {
+    font-size: 0.95rem;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* ── IMPORTANT ── */
+  .important {
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 40px 36px;
+    margin: 40px 0;
+  }
+
+  .important h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .important p {
+    font-size: 0.95rem;
+  }
+
+  .not-for {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  .not-for li {
+    padding: 10px 0 10px 24px;
+    position: relative;
+    color: var(--cream-dim);
+    font-size: 1.2rem;
+    opacity: 0.8;
+  }
+  .not-for li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-section {
+    text-align: center;
+    padding: 100px 24px;
+    background: linear-gradient(to bottom, transparent, var(--black-mid) 30%, var(--black-mid) 70%, transparent);
+  }
+
+  .cta-section h2 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    margin-bottom: 24px;
+  }
+
+  .cta-section p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-style: italic;
+    max-width: 500px;
+    margin: 0 auto 48px;
+    text-align: center;
+  }
+
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .cta-btn-outline {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    background: transparent;
+    padding: 14px 36px;
+    text-decoration: none;
+    border: 1px solid rgba(201,168,76,0.4);
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
+  .cta-btn-outline:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    transform: translateY(-2px);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 60px 24px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 24px;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 15px rgba(201,168,76,0.2));
+  }
+
+  .footer-logo img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+  }
+
+  footer p {
+    font-size: 0.85rem;
+    color: rgba(184,169,138,0.5);
+    text-align: center;
+    margin: 0;
+  }
+
+  .footer-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    margin-bottom: 8px !important;
+  }
+
+  /* ── CLOSING PHRASE ── */
+  .closing {
+    text-align: center;
+    padding: 80px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .closing-phrase {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    font-weight: 300;
+    color: var(--cream-dim);
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .closing-phrase span {
+    color: var(--gold-light);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes expandWidth {
+    from { width: 0; opacity: 0; }
+    to { width: 120px; opacity: 1; }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .logo-container { width: 200px; height: 200px; }
+    .safe-space { padding: 40px 24px; }
+    .step { grid-template-columns: 44px 1fr; gap: 16px; }
+    .card { padding: 28px 20px; }
+    .important { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars-bg"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="logo-container">
+    <img src="akasha-logo.png" alt="AKASHA Logo">
+  </div>
+  <h1>AKASHA</h1>
+  <p class="hero-subtitle">Regresión a Vidas Pasadas &amp; Memoria Simbólica</p>
+  <div class="hero-line"></div>
+  <p class="hero-tagline">"Comprender el origen transforma el presente."</p>
+  <a href="https://www.instagram.com/AKASHA.regresion" class="cta-btn" target="_blank">RESERVAR MI SESIÓN</a>
+  <div class="scroll-hint">↓</div>
+</section>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="container">
+    <p class="intro-text reveal">
+      Hay experiencias, emociones y patrones que parecen venir<br>
+      de mucho más lejos de lo que imaginamos.
+    </p>
+
+    <div class="highlight-line reveal">
+      "No se trata de creer ciegamente.<br>
+      Se trata de permitir que el inconsciente hable."
+    </div>
+
+    <p class="reveal" style="text-align:center;">
+      A veces sentimos vínculos intensos, miedos difíciles de explicar, bloqueos emocionales o una profunda sensación de no pertenecer… sin encontrar una causa clara dentro de nuestra historia consciente.
+    </p>
+
+    <p class="reveal" style="text-align:center;">
+      AKASHA nace como un espacio de acompañamiento íntimo, humano y respetuoso para quienes sienten la necesidad de mirar más allá de la superficie de su historia personal.
+    </p>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="divider-star">✦</span></div></div>
+
+<!-- QUÉ ES -->
+<section class="what-is">
+  <div class="container">
+    <p class="section-label reveal">El proceso</p>
+    <h2 class="reveal">¿Qué es una sesión de Regresión<br>y Memoria Simbólica?</h2>
+
+    <div class="card reveal">
+      <p>Es un encuentro guiado de exploración interna que permite acceder a escenas, emociones, recuerdos o representaciones simbólicas asociadas al inconsciente profundo.</p>
+      <p style="margin:0;">La persona permanece consciente durante todo el encuentro y puede detener el proceso en cualquier momento. No hay pérdida de control ni manipulación.</p>
+    </div>
+
+    <p class="reveal" style="margin-bottom:24px;">Muchas personas experimentan durante la sesión:</p>
+
+    <ul class="experiences reveal">
+      <li>Memorias emocionales intensas</li>
+      <li>Imágenes recurrentes que finalmente cobran sentido</li>
+      <li>Sensaciones difíciles de explicar que encuentran su origen</li>
+      <li>Conexiones profundas con vínculos o situaciones actuales</li>
+      <li>Experiencias que perciben como recuerdos de otras vidas</li>
+    </ul>
+
+    <div class="highlight-line reveal" style="margin-top:32px;">
+      No es necesario sostener ninguna creencia específica para realizar la experiencia.
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="divider-star">✦</span></div></div>
+
+<!-- MEMORIA SIMBÓLICA -->
+<section>
+  <div class="container">
+    <p class="section-label reveal">Memoria Simbólica</p>
+    <h2 class="reveal">El inconsciente no siempre habla<br>de manera literal.</h2>
+
+    <p class="reveal">Muchas veces se expresa a través de símbolos, escenas, emociones y representaciones internas que contienen información importante sobre nuestros vínculos, bloqueos, miedos y patrones repetitivos.</p>
+
+    <div class="highlight-line reveal">
+      "A veces una sola imagen puede transformar<br>años de confusión."
+    </div>
+
+    <p class="reveal">La memoria simbólica permite observar esos contenidos desde una mirada profunda y respetuosa, sin forzar interpretaciones ni imponer significados.</p>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="divider-star">✦</span></div></div>
+
+<!-- PARA QUÉ AYUDA -->
+<section>
+  <div class="container">
+    <p class="section-label reveal">¿Para quién es?</p>
+    <h2 class="reveal">¿Para qué puede ayudar<br>una sesión?</h2>
+
+    <p class="reveal" style="text-align:center; margin-bottom:32px;">Muchas personas buscan este acompañamiento para trabajar:</p>
+
+    <ul class="experiences reveal">
+      <li>Bloqueos emocionales sin causa aparente</li>
+      <li>Vínculos difíciles o patrones relacionales repetitivos</li>
+      <li>Miedo al abandono o a la pérdida</li>
+      <li>Sensación de vacío o de no encontrar el propio lugar</li>
+      <li>Ansiedad o tristeza persistente</li>
+      <li>Procesos de duelo que no terminan de cerrarse</li>
+      <li>Necesidad profunda de comprenderse más allá de lo racional</li>
+    </ul>
+
+    <p class="reveal" style="text-align:center; margin-top:32px; font-style:italic;">Cada experiencia es única y personal.</p>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="divider-star">✦</span></div></div>
+
+<!-- EL PROCESO -->
+<section class="process">
+  <div class="container">
+    <p class="section-label reveal">¿Cómo es?</p>
+    <h2 class="reveal">El proceso</h2>
+
+    <div class="process-steps">
+
+      <div class="step reveal">
+        <div class="step-number">01</div>
+        <div class="step-content">
+          <h3>Preparación y encuentro inicial</h3>
+          <p>Antes de la sesión, recibís un formulario de exploración personal para completar. El mismo día se realiza un encuentro individual de aproximadamente una hora donde conversamos en profundidad sobre tu historia, emociones recurrentes, vínculos y lo que necesitás explorar.</p>
+          <p style="margin:0;">Esta instancia es fundamental: permite generar el espacio de confianza necesario antes de comenzar la regresión.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-number">02</div>
+        <div class="step-content">
+          <h3>Sesión de Regresión y Memoria Simbólica</h3>
+          <p>La experiencia tiene una duración de entre 75 y 90 minutos e incluye relajación guiada, acompañamiento consciente, exploración simbólica, contención emocional e integración posterior.</p>
+          <p style="margin:0;">Cada sesión es única y se desarrolla respetando los tiempos y procesos de cada persona.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-number">03</div>
+        <div class="step-content">
+          <h3>Grabación privada de tu sesión</h3>
+          <p style="margin:0;">Luego del encuentro, recibís la grabación privada de tu sesión para que puedas volver a escucharla e integrar la experiencia a tu propio tiempo y proceso.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="divider-star">✦</span></div></div>
+
+<!-- ESPACIO SEGURO -->
+<section>
+  <div class="container">
+    <div class="safe-space reveal">
+      <h2 style="margin-bottom:24px;">Un espacio seguro<br>y consciente</h2>
+      <p>El proceso se realiza de manera guiada, respetuosa y acompañada en todo momento, permitiendo que cada persona avance únicamente hasta donde se sienta cómoda y segura.</p>
+      <p style="margin:0;">El objetivo no es forzar experiencias, sino abrir un espacio cuidado de exploración interior y comprensión emocional.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MODALIDAD -->
+<section>
+  <div class="container">
+    <p class="section-label reveal">Modalidad</p>
+    <h2 class="reveal">Sesiones online,<br>desde cualquier lugar</h2>
+
+    <div class="modality-grid">
+      <div class="modality-item reveal">
+        <span class="modality-icon">◉</span>
+        <h3>Individual</h3>
+        <p>Cada sesión es personal y privada, adaptada a tu proceso único.</p>
+      </div>
+      <div class="modality-item reveal">
+        <span class="modality-icon">◎</span>
+        <h3>Online</h3>
+        <p>Mediante videollamada privada, desde donde estés en el mundo.</p>
+      </div>
+      <div class="modality-item reveal">
+        <span class="modality-icon">◈</span>
+        <h3>En español</h3>
+        <p>Disponible para personas de habla hispana desde cualquier país.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="divider-star">✦</span></div></div>
+
+<!-- CONFIDENCIALIDAD -->
+<section>
+  <div class="container">
+    <p class="section-label reveal">Privacidad</p>
+    <h2 class="reveal">Confidencialidad<br>y acompañamiento</h2>
+
+    <div class="card reveal">
+      <p>Cada sesión se desarrolla dentro de un espacio de absoluta privacidad, respeto y cuidado emocional.</p>
+      <p style="margin:0;">Toda la información compartida durante el encuentro es estrictamente confidencial y pertenece únicamente a quien consulta. AKASHA no comparte, divulga ni utiliza bajo ningún concepto el contenido de las sesiones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- IMPORTANTE -->
+<section>
+  <div class="container">
+    <div class="important reveal">
+      <h3>Importante</h3>
+      <p>Las sesiones de AKASHA son un espacio complementario de exploración interior y autoconocimiento. No reemplazan tratamientos médicos, psicológicos ni psiquiátricos.</p>
+      <p>Por el tipo de trabajo emocional y simbólico que implican, estas sesiones no son aptas para personas que:</p>
+      <ul class="not-for">
+        <li>Se encuentren atravesando cuadros psiquiátricos severos</li>
+        <li>Estén bajo tratamiento psiquiátrico complejo</li>
+        <li>Presenten episodios psicóticos o esquizofrenia</li>
+        <li>Tengan ideación suicida activa</li>
+        <li>Requieran acompañamiento clínico especializado</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section" id="reserva">
+  <div class="container">
+    <p class="section-label">Comenzar</p>
+    <h2>¿Sentís que hay algo<br>esperando ser comprendido?</h2>
+    <p>Cada proceso es individual y personalizado.<br>Las consultas y reservas se coordinan de manera directa.</p>
+
+    <div class="cta-group">
+      <a href="https://www.instagram.com/AKASHA.regresion" class="cta-btn" target="_blank">SEGUINOS EN INSTAGRAM</a>
+      <a href="https://www.instagram.com/AKASHA.regresion" class="cta-btn-outline" target="_blank">CONSULTAS POR INSTAGRAM</a>
+    </div>
+  </div>
+</section>
+
+<!-- CIERRE -->
+<div class="closing">
+  <p class="closing-phrase">
+    Hay memorias que no desaparecen.<br>
+    Solo esperan el momento adecuado<br>
+    para ser <span>comprendidas.</span>
+  </p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="akasha-logo.png" alt="AKASHA">
+  </div>
+  <p class="footer-name">AKASHA</p>
+  <p>Regresión a Vidas Pasadas y Memoria Simbólica</p>
+  <p style="margin-top:16px; font-size:0.75rem;">© 2025 AKASHA · Todos los derechos reservados</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Staggered reveals for lists
+  document.querySelectorAll('.experiences').forEach(list => {
+    list.querySelectorAll('li').forEach((li, i) => {
+      li.style.transitionDelay = `${i * 0.08}s`;
+      li.classList.add('reveal');
+      observer.observe(li);
+    });
+  });
+</script>
+
+</body>
+</html>
